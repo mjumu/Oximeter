@@ -32,7 +32,7 @@ class Calculator {
 public:
     
     double bloodOxygenFormula(DSP dsp) {
-        return log(dsp.readLight(sensorPin));  // Example calibration equation
+        return log(dsp.readLight(sensorPin)) * 100;  // Example calibration equation
     }
 };
 
