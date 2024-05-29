@@ -32,7 +32,7 @@ class Calculator {
 public:
     
     double bloodOxygenFormula(DSP dsp) {
-        return log(dsp.readLight(sensorPin));  // Example calibration equation
+        return log(dsp.readLight(sensorPin)) * 100;  // Example calibration equation
     }
 };
 
@@ -64,8 +64,6 @@ void loop() {
     if (active_state != 0) {
         displayer.print("SpO2: " + String(spo2) + "%");
         active_state = 0;
-    } else {
-        displayer.print("Please insert finger");
     }
 
     delay(1000); // Delay to reduce the reading speed
