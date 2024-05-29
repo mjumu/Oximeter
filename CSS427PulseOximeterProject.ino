@@ -22,7 +22,7 @@ public:
         double result = 0.0;
         if (active_state != 0) {
             result = (double) (resting_state/active_state);
-            active_state = 0;
+            
         }
         return result;
     }
@@ -31,8 +31,8 @@ public:
 class Calculator {
 public:
     
-    double bloodOxygenFormula() {
-        return log(DSP.readLight(sensorPin));  // Example calibration equation
+    double bloodOxygenFormula(DSP dsp) {
+        return log(dsp.readLight(sensorPin));  // Example calibration equation
     }
 };
 
@@ -51,24 +51,19 @@ Displayer displayer;
 void setup() {
     Serial.begin(9600);
     // Change to 14-bit resolution (Assuming using an Arduino Uno R4 Minima which has an ADC resolution of 14 bits)
-    analogReadResolution(14); 
+    //analogReadResolution(14); 
     pinMode(sensorPin, INPUT);
-    pinMode(RED_LED_PIN, OUTPUT);
-    pinMode(IR_LED_PIN, OUTPUT);
 }
 
 void loop() {
-    // Read light levels
-    float irReading = dsp.readLight(sensorPin);
-    float redReading = dsp.readLight(sensorPin);
-
-    // Update calculator readings
-    calculator.updateReadings(irReading, redReading);
+    
 
     // Check if a reading is possible
-    if (calculator.isReading()) {
-        float spo2 = calculator.bloodOxygenFormula();
+    
+    float spo2 = calculator.bloodOxygenFormula(dsp);
+    if (active_state != 0) {
         displayer.print("SpO2: " + String(spo2) + "%");
+        active_state = 0;
     } else {
         displayer.print("Please insert finger");
     }
